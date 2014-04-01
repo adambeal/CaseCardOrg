@@ -1,0 +1,123 @@
+<apex:page controller="CardController"  sidebar="true">
+<head>
+  <meta charset="utf-8"/>
+  <title>Case Cards</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/>
+  <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css"/>
+<style>
+.cardSquare {     
+    width: 260px;
+    height: 140px;
+    padding: 0.5em;
+    border: 1px solid black; 
+    float: left; 
+    margin: 6px 5px 5px 0;
+}
+
+
+.cardSquareTarget {     
+    width: 260px;
+    height: 140px;
+    padding: 0.5em;
+    border: 1px solid black; 
+    float: left; 
+    margin: 6px 5px 5px 0;
+}
+
+.sectionContainer {     
+    width:70%;
+}
+td {width:auto !important;}
+</style>
+ <script>
+  $(function() {  
+    $( '.cardSquare' ).draggable();
+    $( '.cardSquareTarget' ).droppable({
+      drop: function( event, ui ) { 
+            //call the controller method
+            CardController.setStatus(ui.draggable.attr('id'),this.id,function(result, event){
+            window.location.href = location.href;//'/apex/cards?sfdc.tabName=01rd0000000JCNx';
+        });    
+      }
+    });
+  });
+  </script>
+</head>  
+
+<apex:Form >
+<apex:pageBlock Title="Case Cards">
+
+ <apex:commandButton action="{!TwilioTest}" value="Test Twilio" id="theButton"/>
+  <apex:pageBlockSection title="Development" collapsible="true" columns="3" id="section1">
+    <div class="sectionContainer">
+        <!--The droppable target card-->
+        <div class="cardSquareTarget" style="background-color:lightgrey;margin-right:30px;margin-bottom:30px;" id="Development" >
+            <a href="#">Add a new card</a><br/><br/>Drag a card here to move it to <b>Development</b><br/><br/><br/>
+        </div>
+        <!--The draggable case cards built in a repeater-->    
+        <apex:repeat value="{!CasesMap['Development']}" var="listvalue" id="DevelopmentRepeater">
+            <div class="cardSquare" style="background-color:lightgreen;" id="{!listvalue.Id}" >
+               <a href="/{!listvalue.Id}">{!listvalue.CaseNumber}</a>
+               <br/><b>{!listvalue.Subject}</b>
+               <br/><br/>{!listvalue.Description}<br/><br/>                
+           </div>
+        </apex:repeat>
+     </div>
+  </apex:pageBlockSection>
+    
+  <apex:pageBlockSection title="Testing" collapsible="true" columns="3" id="section2">
+      <div class="sectionContainer">
+        <!--The droppable target card-->
+        <div class="cardSquareTarget" style="background-color:lightgrey;margin-right:30px;margin-bottom:30px;" id="Testing" >
+            <a href="#">Add a new card</a><br/><br/>Drag a card here to move it to <b>Testing</b><br/><br/><br/>
+        </div>
+        <!--The draggable case cards built in a repeater-->
+         <apex:repeat value="{!CasesMap['Testing']}" var="listvalue">
+            <div class="cardSquare" style="background-color:lightgreen;" id="{!listvalue.Id}" >
+               <a href="/{!listvalue.Id}">{!listvalue.CaseNumber}</a>
+               <br/><b>{!listvalue.Subject}</b>
+               <br/><br/>{!listvalue.Description}<br/><br/>  
+           </div>
+        </apex:repeat>
+       </div>
+    </apex:pageBlockSection>
+    
+    <apex:pageBlockSection title="Roadblocked" collapsible="true" columns="3"> 
+      <div class="sectionContainer">
+       <!--The droppable target card-->
+        <div class="cardSquareTarget" style="background-color:lightgrey;margin-right:30px;margin-bottom:30px;" id="Roadblocked" >
+            <a href="#">Add a new card</a><br/><br/>Drag a card here to move it to <b>Roadblocked</b><br/><br/><br/>
+        </div>
+        <!--The draggable case cards built in a repeater-->
+         <apex:repeat value="{!CasesMap['Roadblocked']}" var="listvalue">
+             <div class="cardSquare" style="background-color:lightgreen;" id="{!listvalue.Id}" >
+               <a href="/{!listvalue.Id}">{!listvalue.CaseNumber}</a>
+               <br/><b>{!listvalue.Subject}</b>
+               <br/><br/>{!listvalue.Description}<br/><br/>  
+           </div>
+        </apex:repeat>
+       </div>
+      </apex:pageBlockSection>
+    
+     <apex:pageBlockSection title="Done" collapsible="true" columns="3">
+      <div class="sectionContainer">
+       <!--The droppable target card-->
+        <div class="cardSquareTarget" style="background-color:lightgrey;margin-right:30px;margin-bottom:30px;" id="Done" >
+            <a href="#">Add a new card</a><br/><br/>Drag a card here to move it to <b>Done</b><br/><br/><br/>
+        </div>
+        <!--The draggable case cards built in a repeater-->
+         <apex:repeat value="{!CasesMap['Done']}" var="listvalue">
+             <div class="cardSquare" style="background-color:lightgreen;" id="{!listvalue.Id}" >
+               <a href="/{!listvalue.Id}">{!listvalue.CaseNumber}</a>
+               <br/><b>{!listvalue.Subject}</b>
+               <br/><br/>{!listvalue.Description}<br/><br/>  
+           </div>
+        </apex:repeat>
+       </div>
+     </apex:pageBlockSection>
+</apex:pageBlock>
+</apex:Form>
+<br/>
+</apex:page>
